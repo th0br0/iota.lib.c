@@ -9,7 +9,6 @@
 #include <stdint.h>
 
 #include "constants.h"
-#include "sign.h"
 #include "generate.h"
+#include "sign.h"
 #include "validate.h"
-

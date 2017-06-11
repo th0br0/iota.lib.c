@@ -5,6 +5,17 @@
 
 #include <iota/iota.h>
 
+TEST(GenerateTest, GenerateAddress) {
+  auto seed = std::string("WQNZOHUT99PWKEBFSKQSYNC9XHT9GEBMOSJAQDQAXPEZPJNDIUB9"
+                          "TSNWVMHKWICW9WVZXSMDFGISOD9FZ");
+  auto expectedAddr =
+      std::string("KTXFP9XOVMVWIXEWMOISJHMQEXMYMZCUGEQNKGUNVRPUDPRX9IR9LBASIARW"
+                  "NFXXESPITSLYAQMLCLVTL9QTIWOWTY");
+
+  auto addr = std::string(iota_generateAddress(seed.c_str(), 0, 2));
+  EXPECT_EQ(addr, expectedAddr);
+}
+
 TEST(GenerateTest, GenerateKey) {
   auto keyTrytes = std::string(
       "VYWSMHNCTYSHBZHTTWNFIGW9AWZVXCEFTQKRTDQCWTUAGJAGJHQHQUQGMQRUIMR9YARMHLRM"

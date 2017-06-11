@@ -1,3 +1,4 @@
+#include <iota/internal.h>
 #include <iota/iota.h>
 
 #include <stdlib.h>
@@ -48,9 +49,7 @@ const char *iota_generateKey(const char *seed, int keyIndex,
     }
   }
 
-  init_curl(&curl);
-  absorb(&curl, trits, 0, IOTA_HASHLEN_TRIT);
-  squeeze(&curl, trits, 0, IOTA_HASHLEN_TRIT);
+  iota_curl_hash(&curl, trits, 0, IOTA_HASHLEN_TRIT);
 
   init_curl(&curl);
   absorb(&curl, trits, 0, IOTA_HASHLEN_TRIT);
@@ -59,8 +58,9 @@ const char *iota_generateKey(const char *seed, int keyIndex,
   keyTrits = (trit_t *)calloc(len, sizeof(trit_t));
   for (i = 0; i < securityLevel; i++) {
     for (j = 0; j < NUMBER_OF_ROUNDS; j++) {
-      memcpy((void *)(keyTrits + ((i * NUMBER_OF_ROUNDS + j) * IOTA_HASHLEN_TRIT)),
-             curl.state, IOTA_HASHLEN_TRIT * sizeof(trit_t));
+      memcpy(
+          (void *)(keyTrits + ((i * NUMBER_OF_ROUNDS + j) * IOTA_HASHLEN_TRIT)),
+          curl.state, IOTA_HASHLEN_TRIT * sizeof(trit_t));
       squeeze(&curl, trits, 0, IOTA_HASHLEN_TRIT);
     }
   }
@@ -71,4 +71,26 @@ const char *iota_generateKey(const char *seed, int keyIndex,
   free((void *)keyTrits);
 
   return key;
+}
+
+const char *iota_generateAddress(const char *seed, int keyIndex,
+                                 int securityLevel) {
+  const char *key, *digest, *address, *addressChecksum;
+  Curl c;
+
+  key = iota_generateKey(seed, keyIndex, securityLevel);
+  if (!key) {
+    return NULL;
+  }
+
+  digest = iota_digests(key);
+  free((void *)key);
+
+  address = iota_curl_hash_trytes(&c, digest, strlen(digest));
+  free((void *)digest);
+
+  addressChecksum = iota_checksum(address);
+  free((void *)address);
+
+  return addressChecksum;
 }
