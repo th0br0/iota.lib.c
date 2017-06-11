@@ -11,6 +11,7 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_SOURCE_DIR}/CMake/Modules
   ${CMAKE_SOURCE_DIR}/external/sanitizers-cmake/cmake
   )
+set(CMAKE_C_FLAGS -Wall)
 set(LIBRARY_NAME "IOTA")
 
 # Package dependencies
@@ -28,7 +29,7 @@ include_directories(
   )
 
 # Library source
-file(GLOB LIB_SRC src/**.c) 
+file(GLOB_RECURSE LIB_SRC src/*.c) 
 add_library(${LIBRARY_NAME}static STATIC ${LIB_SRC})
 target_link_libraries(${LIBRARY_NAME}static ccurl)
 

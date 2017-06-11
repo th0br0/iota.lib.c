@@ -8,9 +8,9 @@
 
 const char *iota_generateSeed() {
   int i;
-  char *tr = malloc(IOTA_TRYTE_LENGTH * sizeof(char) + 1);
+  char *tr = malloc(IOTA_HASHLEN_TRIT * sizeof(char) + 1);
 
-  for (i = 0; i < IOTA_TRYTE_LENGTH; i++) {
+  for (i = 0; i < IOTA_HASHLEN_TRIT; i++) {
     int c = rand() % IOTA_TRYTE_ALPHABET_LENGTH;
     if (c == 0) {
       tr[i] = '9';
@@ -18,7 +18,7 @@ const char *iota_generateSeed() {
       tr[i] = 64 + c;
     }
   }
-  tr[IOTA_TRYTE_LENGTH] = '\0';
+  tr[IOTA_HASHLEN_TRIT] = '\0';
 
   return tr;
 }
@@ -36,9 +36,9 @@ const char *iota_generateKey(const char *seed, int keyIndex,
     return NULL;
   }
 
-  trits = trits_from_trytes(seed, IOTA_TRYTE_LENGTH);
+  trits = trits_from_trytes(seed, IOTA_HASHLEN_TRYTE);
   for (i = 0; i < keyIndex; i++) {
-    for (j = 0; j < IOTA_TRYTE_LENGTH * 3; j++) {
+    for (j = 0; j < IOTA_HASHLEN_TRIT; j++) {
       trits[j]++;
       if (trits[j] > 1) {
         trits[j] = -1;
@@ -49,20 +49,19 @@ const char *iota_generateKey(const char *seed, int keyIndex,
   }
 
   init_curl(&curl);
-  absorb(&curl, trits, 0, IOTA_HASH_SIZE);
-  squeeze(&curl, trits, 0, IOTA_HASH_SIZE);
+  absorb(&curl, trits, 0, IOTA_HASHLEN_TRIT);
+  squeeze(&curl, trits, 0, IOTA_HASHLEN_TRIT);
 
   init_curl(&curl);
-  absorb(&curl, trits, 0, IOTA_HASH_SIZE);
-  len = IOTA_HASH_SIZE * NUMBER_OF_ROUNDS * securityLevel;
+  absorb(&curl, trits, 0, IOTA_HASHLEN_TRIT);
+  len = IOTA_HASHLEN_TRIT * NUMBER_OF_ROUNDS * securityLevel;
 
-  keyTrits = (trit_t *)malloc(len * sizeof(trit_t));
-  memset(keyTrits, 0, len * sizeof(trit_t));
+  keyTrits = (trit_t *)calloc(len, sizeof(trit_t));
   for (i = 0; i < securityLevel; i++) {
     for (j = 0; j < NUMBER_OF_ROUNDS; j++) {
-      memcpy((void *)(keyTrits + ((i * NUMBER_OF_ROUNDS + j) * IOTA_HASH_SIZE)),
-             curl.state, IOTA_HASH_SIZE * sizeof(trit_t));
-      squeeze(&curl, trits, 0, IOTA_HASH_SIZE);
+      memcpy((void *)(keyTrits + ((i * NUMBER_OF_ROUNDS + j) * IOTA_HASHLEN_TRIT)),
+             curl.state, IOTA_HASHLEN_TRIT * sizeof(trit_t));
+      squeeze(&curl, trits, 0, IOTA_HASHLEN_TRIT);
     }
   }
 
