@@ -30,16 +30,16 @@ file(GLOB LIB_SRC src/**.c)
 add_library(${LIBRARY_NAME}static STATIC ${LIB_SRC})
 target_link_libraries(${LIBRARY_NAME}static ccurl)
 
-if(DEFINED ${BUILD_SHARED})
+if(DEFINED BUILD_SHARED)
   add_library(${LIBRARY_NAME} SHARED ${LIB_SRC})
   target_link_libraries(${LIBRARY_NAME} ccurl)
-endif(DEFINED ${BUILD_SHARED})
+endif(DEFINED BUILD_SHARED)
 
 # Testing
-if(DEFINED ${BUILD_TEST}) 
+if(DEFINED BUILD_TEST) 
   include(CTest)
   include(SetupGTest)
   enable_testing()
 
   add_subdirectory(test)
-endif(DEFINED ${BUILD_TEST})
+endif(DEFINED BUILD_TEST)
