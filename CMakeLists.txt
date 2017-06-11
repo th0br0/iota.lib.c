@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.4.0)
 project(iota.lib.c)
 enable_language(C CXX)
 
+include(CTest)
+
 # Global definitions
 set(CMAKE_PROJECT_NAME "iota.lib.c")
 set(CMAKE_MODULE_PATH
@@ -32,14 +34,14 @@ target_link_libraries(${LIBRARY_NAME}static ccurl)
 
 if(DEFINED BUILD_SHARED)
   add_library(${LIBRARY_NAME} SHARED ${LIB_SRC})
+  set_property(TARGET ${LIBRARY_NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
   target_link_libraries(${LIBRARY_NAME} ccurl)
 endif(DEFINED BUILD_SHARED)
 
 # Testing
-if(DEFINED BUILD_TEST) 
-  include(CTest)
+if(BUILD_TESTING) 
   include(SetupGTest)
   enable_testing()
 
   add_subdirectory(test)
-endif(DEFINED BUILD_TEST)
+endif(BUILD_TESTING)

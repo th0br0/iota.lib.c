@@ -7,6 +7,18 @@
 
 #include "constants.h"
 
+#ifndef EXPORT
+#if defined(_WIN32)
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT
+#endif
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 /**
  * Generates a new IOTA seed.
  * 
@@ -14,7 +26,7 @@
  *
  * @return a valid new seed
  */
-char* iota_generateSeed();
+EXPORT const char* iota_generateSeed();
 
 
 /**
@@ -25,6 +37,17 @@ char* iota_generateSeed();
  * @param securityLevel determines number of ccurl iterations
  * @return 
  */
-char* iota_generateKey(char* seed, uintmax_t keyIndex, uintmax_t securityLevel);
+EXPORT const char* iota_generateKey(const char* seed, int keyIndex, int securityLevel);
 
+/**
+ * Validates trytes
+ *
+ * @param trytes trytes to validate
+ * @return 0 if trytes is invalid
+ * @return 1 if trytes is valid
+ */
+EXPORT int iota_isValidTrytes(const char* trytes);
 
+#ifdef __cplusplus
+}
+#endif

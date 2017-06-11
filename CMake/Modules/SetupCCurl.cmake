@@ -11,3 +11,4 @@ set(CCURL_SOURCES
   )
 
 add_library(ccurl ${CCURL_SOURCES})
+set_property(TARGET ccurl PROPERTY POSITION_INDEPENDENT_CODE ON)
