@@ -1,0 +1,3 @@
+COMPONENT_ADD_LDFLAGS += $(COMPONENT_PATH)/../buildIOTA/libIOTAstatic.a
+COMPONENT_ADD_INCLUDEDIRS += ../../../include
+
