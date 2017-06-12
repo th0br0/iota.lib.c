@@ -81,3 +81,4 @@ int8_t *iota_normalize(const char *trytes) {
 
   return normalized;
 }
+

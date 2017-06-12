@@ -2,6 +2,9 @@
 
 #include "export.h"
 
+#include <stdint.h>
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -27,6 +30,27 @@ EXPORT const char *iota_digests(const char *trytes);
  * @return trytes with checksum
  */
 EXPORT const char *iota_checksum(const char *trytes);
+
+  /**
+   * Takes a normalized (bundle) fragment and the accompanying key fragment and returns 
+   * a signed fragment.
+   *
+   * @param normalizedFragment len(normalizedFragment) = 27
+   * @return signed fragment (trytes)
+   */
+  EXPORT const char *iota_sign(const int8_t* normalizedFragment, const char* keyTrytes);
+
+  /**
+   * Validates signatures for a given address and bundle hash.
+   *
+   * @param address tryte encoded address
+   * @param signFrags array of signed fragments
+   * @param len number of signed fragments
+   * @param bundleHash bundle hash
+   *
+   * @return 0 if signature fragments are valid
+   */
+  EXPORT char iota_validateSignature(const char* address, const char ** signFrags, size_t len, const char* bundleHash);
 
 #ifdef __cplusplus
 }
