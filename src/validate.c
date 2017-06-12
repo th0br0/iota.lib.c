@@ -3,7 +3,7 @@
 
 int iota_isValidTrytes(const char *const trytes) {
   int i;
-  int length = strlen(trytes);
+  int length = strnlen(trytes, IOTA_HASHLEN_TRYTE);
 
   if (length != IOTA_HASHLEN_TRYTE) {
     return 1;

@@ -16,7 +16,7 @@ const char *iota_curl_hash_trytes(Curl *curl, const char *trytes, int len) {
   trit_t *trits;
 
   init_converter();
-  trits = trits_from_trytes(trytes, strlen(trytes));
+  trits = trits_from_trytes(trytes, len);
 
   iota_curl_hash(curl, trits, 0, len * 3);
 
