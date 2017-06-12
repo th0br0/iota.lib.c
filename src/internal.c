@@ -14,13 +14,16 @@ void iota_curl_hash(Curl *curl, trit_t *trits, int offset, int length) {
 
 const char *iota_curl_hash_trytes(Curl *curl, const char *trytes, int len) {
   trit_t *trits;
+  char *ret;
 
   init_converter();
   trits = trits_from_trytes(trytes, len);
-
   iota_curl_hash(curl, trits, 0, len * 3);
+  ret = trytes_from_trits(trits, 0, len * 3);
 
-  return trytes_from_trits(trits, 0, len * 3);
+  free((void *)trits);
+
+  return ret;
 }
 
 int64_t trits2int(trit_t *trits, int len) {
@@ -81,4 +84,3 @@ int8_t *iota_normalize(const char *trytes) {
 
   return normalized;
 }
-

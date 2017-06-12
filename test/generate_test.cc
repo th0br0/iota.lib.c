@@ -6,14 +6,16 @@
 #include <iota/iota.h>
 
 TEST(GenerateTest, GenerateAddress) {
-  auto seed = std::string("WQNZOHUT99PWKEBFSKQSYNC9XHT9GEBMOSJAQDQAXPEZPJNDIUB9"
-                          "TSNWVMHKWICW9WVZXSMDFGISOD9FZ");
+  auto seed = "WQNZOHUT99PWKEBFSKQSYNC9XHT9GEBMOSJAQDQAXPEZPJNDIUB9"
+                          "TSNWVMHKWICW9WVZXSMDFGISOD9FZ";
   auto expectedAddr =
-      std::string("KTXFP9XOVMVWIXEWMOISJHMQEXMYMZCUGEQNKGUNVRPUDPRX9IR9LBASIARW"
-                  "NFXXESPITSLYAQMLCLVTL9QTIWOWTY");
+      "KTXFP9XOVMVWIXEWMOISJHMQEXMYMZCUGEQNKGUNVRPUDPRX9IR9LBASIARW"
+                  "NFXXESPITSLYAQMLCLVTL9QTIWOWTY";
 
-  auto addr = std::string(iota_generateAddress(seed.c_str(), 0, 2));
-  EXPECT_EQ(addr, expectedAddr);
+  auto addr = iota_generateAddress(seed, 0, 2);
+  EXPECT_EQ(std::string(addr), expectedAddr);
+
+  free((void*) addr);
 }
 
 TEST(GenerateTest, GenerateKey) {
@@ -82,7 +84,8 @@ TEST(GenerateTest, GenerateKey) {
   auto seed = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
               "AAAAAAAAAAAAAAAAA";
   EXPECT_TRUE(iota_isValidTrytes(seed));
-  auto computed = std::string(iota_generateKey(seed, 1, 2));
+  auto computed = iota_generateKey(seed, 1, 2);
 
   EXPECT_EQ(computed, keyTrytes);
+  free((void*) computed);
 }

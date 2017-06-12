@@ -13,10 +13,13 @@ TEST(SignTest, Digests) {
                         "Q";
   auto seed = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
               "AAAAAAAAAAAAAAAAA";
-  auto computed = std::string(iota_generateKey(seed, 0, 2));
-  auto digests = std::string(iota_digests(computed.c_str()));
+  auto computed = iota_generateKey(seed, 0, 2);
+  auto digests = iota_digests(computed);
 
-  EXPECT_EQ(digests, expectedTrytes);
+  EXPECT_EQ(expectedTrytes, std::string(digests));
+
+  free((void*) computed);
+  free((void*) digests);
 }
 
 TEST(SignTest, Sign) {
@@ -103,13 +106,19 @@ TEST(SignTest, Sign) {
   const char* key = iota_generateKey(seed.c_str(), 0, 2);
   int8_t* normalized = iota_normalize(bundleHash.c_str());
 
-  std::string sign0 = iota_sign(normalized, key);
+  auto sign0 = iota_sign(normalized, key);
   EXPECT_EQ(sign0, csign0);
-  std::string sign1 = iota_sign(normalized+27, key + IOTA_FRAGMENT_LENGTH);
+  auto sign1 = iota_sign(normalized+27, key + IOTA_FRAGMENT_LENGTH);
   EXPECT_EQ(sign1, csign1);
 
-  std::string address = iota_generateAddress(seed.c_str(), 0, 2);
+  auto address = iota_generateAddress(seed.c_str(), 0, 2);
 
-  const char* signatures[] = {sign0.c_str(), sign1.c_str()};
-  EXPECT_TRUE(!iota_validateSignature(address.c_str(), signatures, 2,  bundleHash.c_str()));
+  const char* signatures[] = {sign0, sign1};
+
+  EXPECT_TRUE(!iota_validateSignature(address, signatures, 2,  bundleHash.c_str()));
+  free((void*) sign0);
+  free((void*) sign1);
+  free((void*) address);
+  free((void*) key);
+  free((void*) normalized);
 }
