@@ -1,5 +1,7 @@
-[![Build Status](https://travis-ci.org/th0br0/iota.lib.c.svg?branch=master)](https://travis-ci.org/iotaledger/iota.lib.c)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/iotaledger/iota.lib.c/master/LICENSE)
+[![Build Status][travis-badge]][travis-link]
+[![codecov][codecov-badge]][codecov-link]
+[![MIT License][license-badge]](LICENSE)
+
 
 
 iota.lib.c
@@ -17,3 +19,9 @@ This project uses `cmake`
 <hr>
 
 Released under the [MIT License](LICENSE).
+
+[travis-badge]:    https://travis-ci.org/th0br0/iota.lib.c.svg?branch=master
+[travis-link]:     https://travis-ci.org/th0br0/iota.lib.c
+[license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
+[codecov-badge]:   https://codecov.io/gh/th0br0/iota.lib.c/branch/master/graph/badge.svg
+[codecov-link]:    https://codecov.io/gh/th0br0/iota.lib.c

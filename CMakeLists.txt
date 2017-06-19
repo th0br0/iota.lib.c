@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.0)
+cmake_minimum_required(VERSION 3.1.0)
 
 project(iota.lib.c)
 enable_language(C CXX)
@@ -43,6 +43,5 @@ endif(DEFINED BUILD_SHARED)
 if(BUILD_TESTING) 
   include(SetupGTest)
   enable_testing()
-
   add_subdirectory(test)
 endif(BUILD_TESTING)
