@@ -5,6 +5,11 @@
 
 #include <iota/iota.h>
 
+TEST(GenerateTest, GenerateSeed) { 
+  auto seed = iota_generateSeed();
+  EXPECT_EQ(std::string(seed).length(), 81);
+}
+
 TEST(GenerateTest, GenerateAddress) {
   auto seed = "WQNZOHUT99PWKEBFSKQSYNC9XHT9GEBMOSJAQDQAXPEZPJNDIUB9"
                           "TSNWVMHKWICW9WVZXSMDFGISOD9FZ";

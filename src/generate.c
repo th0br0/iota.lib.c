@@ -9,9 +9,9 @@
 
 const char *iota_generateSeed() {
   int i;
-  char *tr = malloc(IOTA_HASHLEN_TRIT * sizeof(char) + 1);
+  char *tr = malloc((IOTA_HASHLEN_TRYTE + 1) * sizeof(char));
 
-  for (i = 0; i < IOTA_HASHLEN_TRIT; i++) {
+  for (i = 0; i < IOTA_HASHLEN_TRYTE; i++) {
     int c = rand() % IOTA_TRYTE_ALPHABET_LENGTH;
     if (c == 0) {
       tr[i] = '9';
@@ -19,7 +19,7 @@ const char *iota_generateSeed() {
       tr[i] = 64 + c;
     }
   }
-  tr[IOTA_HASHLEN_TRIT] = '\0';
+  tr[IOTA_HASHLEN_TRYTE] = '\0';
 
   return tr;
 }
